@@ -1,8 +1,11 @@
 package com.knotworking.inhabit.home
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor() : ViewModel() {
     private var _count = 0
     val count: Int
         get() = _count
