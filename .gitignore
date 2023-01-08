@@ -69,3 +69,4 @@ lint/reports/
 
 # Android Profiling
 *.hprof
+/.idea/.name
