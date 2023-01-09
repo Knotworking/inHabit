@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "inHabit"
 include ':app'
 include ':domain'
+include ':data'

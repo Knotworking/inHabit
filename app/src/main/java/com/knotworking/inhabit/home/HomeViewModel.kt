@@ -1,7 +1,7 @@
 package com.knotworking.inhabit.home
 
 import com.knotworking.inhabit.BaseViewModel
-import com.knotworking.inhabit.domain.GetHabitsUseCase
+import com.knotworking.inhabit.domain.usecase.GetHabitsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*

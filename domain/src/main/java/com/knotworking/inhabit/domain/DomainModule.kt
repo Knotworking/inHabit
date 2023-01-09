@@ -1,28 +1,21 @@
 package com.knotworking.inhabit.domain
 
-import dagger.Binds
+import com.knotworking.inhabit.domain.repository.HabitRepository
+import com.knotworking.inhabit.domain.usecase.GetHabitsUseCase
+import com.knotworking.inhabit.domain.usecase.getHabits
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
-@Module(includes = [DomainModule.BindsModule::class])
+@Module
 @InstallIn(SingletonComponent::class)
 object DomainModule {
 
     @Provides
-    fun provideGetHabitsUseCase() : GetHabitsUseCase {
+    fun provideGetHabitsUseCase(habitRepository: HabitRepository): GetHabitsUseCase {
         return GetHabitsUseCase {
-            getHabits()
+            getHabits(habitRepository = habitRepository)
         }
-    }
-
-    @Module
-    @InstallIn(SingletonComponent::class)
-    interface BindsModule {
-//        @Binds
-//        @Singleton
-//        fun bindRocketRepository(impl: RocketRepositoryImpl): RocketRepository
     }
 }
