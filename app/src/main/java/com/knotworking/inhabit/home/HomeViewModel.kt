@@ -2,6 +2,8 @@ package com.knotworking.inhabit.home
 
 import com.knotworking.inhabit.BaseViewModel
 import com.knotworking.inhabit.domain.usecase.GetHabitsUseCase
+import com.knotworking.inhabit.model.HabitDisplayable
+import com.knotworking.inhabit.model.toDisplayable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
@@ -38,8 +40,9 @@ class HomeViewModel @Inject constructor(
             }.onCompletion {
 
             }.collect { result ->
-                result.onSuccess {
-                    _habitsViewState.value = HabitsViewState(habits = it)
+                result.onSuccess { habits ->
+                    _habitsViewState.value =
+                        HabitsViewState(habits = habits.map { habit -> habit.toDisplayable() })
                 }
             }
         }
@@ -48,6 +51,6 @@ class HomeViewModel @Inject constructor(
     data class HabitsViewState(
         val hasError: Boolean = false,
         val loading: Boolean = false,
-        val habits: List<String> = listOf()
+        val habits: List<HabitDisplayable> = listOf()
     )
 }
