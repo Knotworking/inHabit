@@ -1,5 +1,6 @@
 package com.knotworking.inhabit.home
 
+import androidx.lifecycle.viewModelScope
 import com.knotworking.inhabit.BaseViewModel
 import com.knotworking.inhabit.domain.usecase.GetHabitsUseCase
 import com.knotworking.inhabit.model.HabitDisplayable
@@ -7,6 +8,7 @@ import com.knotworking.inhabit.model.toDisplayable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

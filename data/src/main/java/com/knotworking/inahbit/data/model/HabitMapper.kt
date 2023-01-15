@@ -6,3 +6,10 @@ fun Habit.toEntity() = HabitEntity(
     id = id,
     name = name
 )
+
+//TODO implement relationship
+fun HabitEntity.toDomain() = Habit(
+    id = id,
+    name = name,
+    entries = emptyList()
+)

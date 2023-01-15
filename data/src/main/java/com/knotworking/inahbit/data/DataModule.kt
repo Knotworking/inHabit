@@ -1,5 +1,6 @@
 package com.knotworking.inahbit.data
 
+import com.knotworking.inahbit.data.db.HabitDao
 import com.knotworking.inhabit.domain.repository.HabitRepository
 import dagger.Module
 import dagger.Provides
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 object DataModule {
     @Provides
     @Singleton
-    fun provideHabitRepository(): HabitRepository {
-        return HabitRepositoryImpl()
+    fun provideHabitRepository(habitDao: HabitDao): HabitRepository {
+        return HabitRepositoryImpl(habitDao = habitDao)
     }
 }
