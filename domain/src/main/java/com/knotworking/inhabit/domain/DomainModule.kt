@@ -1,7 +1,9 @@
 package com.knotworking.inhabit.domain
 
 import com.knotworking.inhabit.domain.repository.HabitRepository
+import com.knotworking.inhabit.domain.usecase.AddHabitUseCase
 import com.knotworking.inhabit.domain.usecase.GetHabitsUseCase
+import com.knotworking.inhabit.domain.usecase.addHabit
 import com.knotworking.inhabit.domain.usecase.getHabits
 import dagger.Module
 import dagger.Provides
@@ -16,6 +18,16 @@ object DomainModule {
     fun provideGetHabitsUseCase(habitRepository: HabitRepository): GetHabitsUseCase {
         return GetHabitsUseCase {
             getHabits(habitRepository = habitRepository)
+        }
+    }
+
+    @Provides
+    fun provideAddHabitUseCase(habitRepository: HabitRepository): AddHabitUseCase {
+        return AddHabitUseCase { habit ->
+            addHabit(
+                habitRepository = habitRepository,
+                habit = habit
+            )
         }
     }
 }

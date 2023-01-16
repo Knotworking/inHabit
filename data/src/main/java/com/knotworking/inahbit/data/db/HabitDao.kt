@@ -12,7 +12,7 @@ interface HabitDao {
     fun getAll(): Flow<List<HabitEntity>>
 
     @Insert
-    fun insertAll(vararg habits: HabitEntity)
+    suspend fun insertAll(vararg habits: HabitEntity)
 
     //TODO
     //fun delete(id: UUID)
