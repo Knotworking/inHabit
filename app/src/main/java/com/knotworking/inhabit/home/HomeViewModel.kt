@@ -10,7 +10,6 @@ import com.knotworking.inhabit.model.HabitDisplayable
 import com.knotworking.inhabit.model.toDisplayable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import java.util.*
 import javax.inject.Inject
@@ -38,7 +37,6 @@ class HomeViewModel @Inject constructor(
     init {
         //TODO look up where best to fetch data on launch
         getHabits()
-        addHabit()
     }
 
     fun getHabits() {
@@ -67,7 +65,7 @@ class HomeViewModel @Inject constructor(
         launchInViewModelScope {
             val newHabit = Habit(
                 id = UUID.randomUUID(),
-                name = "Exercise",
+                name = "Habit ${_habitsViewState.value.habits.size + 1}",
                 entries = emptyList()
             )
             addHabitUseCase(newHabit).collect { addHabitResult ->
