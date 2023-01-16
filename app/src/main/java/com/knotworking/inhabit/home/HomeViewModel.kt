@@ -5,6 +5,7 @@ import com.knotworking.inhabit.BaseViewModel
 import com.knotworking.inhabit.domain.model.Habit
 import com.knotworking.inhabit.domain.usecase.AddHabitEntryUseCase
 import com.knotworking.inhabit.domain.usecase.AddHabitUseCase
+import com.knotworking.inhabit.domain.usecase.DeleteHabitUseCase
 import com.knotworking.inhabit.domain.usecase.GetHabitsUseCase
 import com.knotworking.inhabit.model.HabitDisplayable
 import com.knotworking.inhabit.model.toDisplayable
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getHabitsUseCase: GetHabitsUseCase,
     private val addHabitUseCase: AddHabitUseCase,
-    private val addHabitEntryUseCase: AddHabitEntryUseCase
+    private val addHabitEntryUseCase: AddHabitEntryUseCase,
+    private val deleteHabitUseCase: DeleteHabitUseCase
 ) : BaseViewModel() {
     private var _count = 0
     val count: Int
@@ -91,6 +93,19 @@ class HomeViewModel @Inject constructor(
                     Log.d("HomeViewModel", "New habit entry added")
                 }.onFailure {
                     Log.e("HomeViewModel", "Failed to add habit entry", it)
+                }
+            }
+        }
+    }
+
+    fun deleteHabit(habitId: UUID) {
+        //Log.d("HomeViewModel", "Delete habit: $habitId")
+        launchInViewModelScope {
+            deleteHabitUseCase(habitId).collect { addHabitEntryResult ->
+                addHabitEntryResult.onSuccess {
+                    Log.d("HomeViewModel", "Habit deleted: $habitId")
+                }.onFailure {
+                    Log.e("HomeViewModel", "Failed delete habit: $habitId", it)
                 }
             }
         }

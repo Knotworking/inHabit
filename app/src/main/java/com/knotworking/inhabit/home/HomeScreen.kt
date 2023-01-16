@@ -35,7 +35,7 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
         isFloatingActionButtonDocked = true,
         bottomBar = {
             BottomAppBar(
-                // Defaults to null, that is, No cutout
+                // Defaults to null/no cutout
                 cutoutShape = MaterialTheme.shapes.small.copy(
                     CornerSize(percent = 50)
                 )
@@ -45,13 +45,17 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            // A surface container using the 'background' color from the theme
-            Surface(
-                modifier = Modifier
-                    .fillMaxSize(),
-                color = MaterialTheme.colors.background
-            ) {
-                Greeting("${habitViewState.habits.map { habit -> "${habit.name} ${habit.entries.map { it.timestamp }}" }}")
+            Greeting("${habitViewState.habits.map {
+                    habit -> "${habit.name} ${habit.entries.map { it.timestamp }}" 
+            }}")
+
+            if (habitViewState.habits.isNotEmpty()) {
+                Button(onClick = {
+                    val latestHabitId = habitViewState.habits.last().id
+                    viewModel.deleteHabit(latestHabitId)
+                }) {
+                    Text(text = "Delete")
+                }
             }
         }
     }

@@ -7,6 +7,7 @@ import com.knotworking.inahbit.data.model.toEntity
 import com.knotworking.inhabit.domain.model.Habit
 import com.knotworking.inhabit.domain.repository.HabitRepository
 import kotlinx.coroutines.flow.*
+import java.util.*
 
 class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
     override fun getHabits(): Flow<List<Habit>> =
@@ -27,5 +28,10 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
     override fun addHabitEntry(habitEntry: Habit.Entry): Flow<Unit> = flow {
         Log.i("HabitRepositoryImpl", "addHabitEntry")
         emit(habitDao.insertAll(habitEntry.toEntity()))
+    }
+
+    override fun deleteHabit(habitId: UUID): Flow<Unit> = flow {
+        Log.i("HabitRepositoryImpl", "deleteHabit: $habitId")
+        emit(habitDao.deleteById(habitId.toString()))
     }
 }

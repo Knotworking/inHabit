@@ -37,4 +37,14 @@ object DomainModule {
             )
         }
     }
+
+    @Provides
+    fun provideDeleteHabitUseCase(habitRepository: HabitRepository): DeleteHabitUseCase {
+        return DeleteHabitUseCase { habitId ->
+            deleteHabit(
+                habitRepository = habitRepository,
+                habitId = habitId
+            )
+        }
+    }
 }
