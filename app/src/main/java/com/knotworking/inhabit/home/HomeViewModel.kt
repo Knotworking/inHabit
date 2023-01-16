@@ -3,12 +3,14 @@ package com.knotworking.inhabit.home
 import android.util.Log
 import com.knotworking.inhabit.BaseViewModel
 import com.knotworking.inhabit.domain.model.Habit
+import com.knotworking.inhabit.domain.usecase.AddHabitEntryUseCase
 import com.knotworking.inhabit.domain.usecase.AddHabitUseCase
 import com.knotworking.inhabit.domain.usecase.GetHabitsUseCase
 import com.knotworking.inhabit.model.HabitDisplayable
 import com.knotworking.inhabit.model.toDisplayable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import java.util.*
 import javax.inject.Inject
@@ -16,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getHabitsUseCase: GetHabitsUseCase,
-    private val addHabitUseCase: AddHabitUseCase
+    private val addHabitUseCase: AddHabitUseCase,
+    private val addHabitEntryUseCase: AddHabitEntryUseCase
 ) : BaseViewModel() {
     private var _count = 0
     val count: Int
@@ -27,13 +30,15 @@ class HomeViewModel @Inject constructor(
     private var _habitsViewState = MutableStateFlow(HabitsViewState())
 
     override val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        // handle error
+        //TODO handle error
+        // also need a nice way to stop showing the error
         _habitsViewState.value = _habitsViewState.value.copy(hasError = true)
     }
 
     init {
         //TODO look up where best to fetch data on launch
         getHabits()
+        addHabit()
     }
 
     fun getHabits() {
@@ -50,11 +55,7 @@ class HomeViewModel @Inject constructor(
                 result.onSuccess { habits ->
                     _habitsViewState.value =
                         HabitsViewState(habits = habits.map { habit -> habit.toDisplayable() })
-                    Log.d("HomeViewModel", "Habits loaded")
-                    //TODO don't do this here after adding proper "add habit" button
-                    if (habits.isEmpty()) {
-                        addHabit()
-                    }
+                    Log.d("HomeViewModel", "${habits.size} habits loaded")
                 }.onFailure {
                     Log.d("HomeViewModel", "getHabits result failure")
                 }
@@ -62,7 +63,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    suspend fun addHabit() {
+    fun addHabit() {
         launchInViewModelScope {
             val newHabit = Habit(
                 id = UUID.randomUUID(),
@@ -72,9 +73,26 @@ class HomeViewModel @Inject constructor(
             addHabitUseCase(newHabit).collect { addHabitResult ->
                 addHabitResult.onSuccess {
                     Log.d("HomeViewModel", "New habit added")
-                    getHabits()
+                    addEntry(newHabit)
                 }.onFailure {
                     Log.e("HomeViewModel", "Failed to add habit", it)
+                }
+            }
+        }
+    }
+
+    fun addEntry(habit: Habit) {
+        launchInViewModelScope {
+            val newHabitEntry = Habit.Entry(
+                id = UUID.randomUUID(),
+                habitId = habit.id,
+                timestamp = System.currentTimeMillis()
+            )
+            addHabitEntryUseCase(newHabitEntry).collect { addHabitEntryResult ->
+                addHabitEntryResult.onSuccess {
+                    Log.d("HomeViewModel", "New habit entry added")
+                }.onFailure {
+                    Log.e("HomeViewModel", "Failed to add habit entry", it)
                 }
             }
         }

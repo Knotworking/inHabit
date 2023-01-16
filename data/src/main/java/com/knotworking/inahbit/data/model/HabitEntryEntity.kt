@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "habit_entry_entity")
+@Entity(tableName = "habit_entry")
 data class HabitEntryEntity(
     @PrimaryKey val id: UUID,
     @ColumnInfo(name = "habit_id") val habitId: UUID,

@@ -7,9 +7,20 @@ fun Habit.toEntity() = HabitEntity(
     name = name
 )
 
-//TODO implement relationship
-fun HabitEntity.toDomain() = Habit(
+fun HabitEntity.toDomain(entries: List<HabitEntryEntity>) = Habit(
     id = id,
     name = name,
-    entries = emptyList()
+    entries = entries.map { it.toDomain() }
+)
+
+fun Habit.Entry.toEntity() = HabitEntryEntity(
+    id = id,
+    habitId = habitId,
+    timestamp = timestamp
+)
+
+fun HabitEntryEntity.toDomain() = Habit.Entry(
+    id = id,
+    habitId = habitId,
+    timestamp = timestamp
 )

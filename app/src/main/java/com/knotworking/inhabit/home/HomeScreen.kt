@@ -20,7 +20,7 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
     ) {
-        Greeting("${habitViewState.habits}")
+        Greeting("${habitViewState.habits.map { habit -> "${habit.name} ${habit.entries.map { it.timestamp }}" }}")
     }
 }
 

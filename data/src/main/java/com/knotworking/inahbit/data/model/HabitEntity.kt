@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 //TODO add entry relationship
-@Entity(tableName = "habit_entity")
+@Entity(tableName = "habit")
 data class HabitEntity(
     @PrimaryKey val id: UUID,
     val name: String
