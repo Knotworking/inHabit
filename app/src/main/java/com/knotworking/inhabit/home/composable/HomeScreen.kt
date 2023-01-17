@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -73,28 +72,6 @@ fun HomeScreenContent(
                 habit = habit,
                 deleteHabit = deleteHabit
             )
-        }
-    }
-}
-
-@Composable
-fun HabitGridItem(
-    modifier: Modifier = Modifier,
-    habit: HabitDisplayable,
-    deleteHabit: (habitId: UUID) -> Unit = {}
-) {
-    Card(modifier = modifier.padding(0.dp), elevation = 5.dp) {
-        Column(Modifier.padding(8.dp)) {
-            Text(text = habit.name)
-            Text(text = "${habit.entries.size} entries")
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                IconButton(onClick = { deleteHabit(habit.id) }) {
-                    Icon(
-                        imageVector = Icons.Filled.MoreVert,
-                        contentDescription = "Extra actions for habit"
-                    )
-                }
-            }
         }
     }
 }
