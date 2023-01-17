@@ -7,7 +7,6 @@ import com.knotworking.inhabit.domain.usecase.AddHabitEntryUseCase
 import com.knotworking.inhabit.domain.usecase.AddHabitUseCase
 import com.knotworking.inhabit.domain.usecase.DeleteHabitUseCase
 import com.knotworking.inhabit.domain.usecase.GetHabitsUseCase
-import com.knotworking.inhabit.model.HabitDisplayable
 import com.knotworking.inhabit.model.toDisplayable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -26,14 +25,14 @@ class HomeViewModel @Inject constructor(
     val count: Int
         get() = _count
 
-    val habitsViewState: StateFlow<HabitsViewState>
-        get() = _habitsViewState
-    private var _habitsViewState = MutableStateFlow(HabitsViewState())
+    val homeViewStateFlow: StateFlow<HomeViewState>
+        get() = _homeViewStateFlow
+    private var _homeViewStateFlow = MutableStateFlow(HomeViewState())
 
     override val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
         //TODO handle error
         // also need a nice way to stop showing the error
-        _habitsViewState.value = _habitsViewState.value.copy(hasError = true)
+        _homeViewStateFlow.value = _homeViewStateFlow.value.copy(hasError = true)
     }
 
     init {
@@ -44,17 +43,17 @@ class HomeViewModel @Inject constructor(
     fun getHabits() {
         launchInViewModelScope {
             getHabitsUseCase().onStart {
-                _habitsViewState.value = HabitsViewState(loading = true)
+                _homeViewStateFlow.value = HomeViewState(loading = true)
                 Log.d("HomeViewModel", "Getting habits")
             }.catch {
-                _habitsViewState.value = HabitsViewState(hasError = true)
+                _homeViewStateFlow.value = HomeViewState(hasError = true)
                 Log.d("HomeViewModel", "getHabits flow catch block")
             }.onCompletion {
 
             }.collect { result ->
                 result.onSuccess { habits ->
-                    _habitsViewState.value =
-                        HabitsViewState(habits = habits.map { habit -> habit.toDisplayable() })
+                    _homeViewStateFlow.value =
+                        HomeViewState(habits = habits.map { habit -> habit.toDisplayable() })
                     Log.d("HomeViewModel", "${habits.size} habits loaded")
                 }.onFailure {
                     Log.d("HomeViewModel", "getHabits result failure")
@@ -67,7 +66,7 @@ class HomeViewModel @Inject constructor(
         launchInViewModelScope {
             val newHabit = Habit(
                 id = UUID.randomUUID(),
-                name = "Habit ${_habitsViewState.value.habits.size + 1}",
+                name = "Habit ${_homeViewStateFlow.value.habits.size + 1}",
                 entries = emptyList()
             )
             addHabitUseCase(newHabit).collect { addHabitResult ->
@@ -99,7 +98,6 @@ class HomeViewModel @Inject constructor(
     }
 
     fun deleteHabit(habitId: UUID) {
-        //Log.d("HomeViewModel", "Delete habit: $habitId")
         launchInViewModelScope {
             deleteHabitUseCase(habitId).collect { addHabitEntryResult ->
                 addHabitEntryResult.onSuccess {
@@ -110,10 +108,4 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
-    data class HabitsViewState(
-        val hasError: Boolean = false,
-        val loading: Boolean = false,
-        val habits: List<HabitDisplayable> = listOf()
-    )
 }

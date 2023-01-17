@@ -1,7 +1,6 @@
-package com.knotworking.inhabit.home
+package com.knotworking.inhabit.home.composable
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
@@ -13,13 +12,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.knotworking.inhabit.home.HomeViewModel
 import com.knotworking.inhabit.ui.theme.InHabitTheme
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
-    val habitViewState by viewModel.habitsViewState.collectAsState()
+    val homeViewState by viewModel.homeViewStateFlow.collectAsState()
     //TODO move scaffold up to main activity
     Scaffold(
         floatingActionButton = {
@@ -45,13 +44,13 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            Greeting("${habitViewState.habits.map {
+            Greeting("${homeViewState.habits.map {
                     habit -> "${habit.name} ${habit.entries.map { it.timestamp }}" 
             }}")
 
-            if (habitViewState.habits.isNotEmpty()) {
+            if (homeViewState.habits.isNotEmpty()) {
                 Button(onClick = {
-                    val latestHabitId = habitViewState.habits.last().id
+                    val latestHabitId = homeViewState.habits.last().id
                     viewModel.deleteHabit(latestHabitId)
                 }) {
                     Text(text = "Delete")
