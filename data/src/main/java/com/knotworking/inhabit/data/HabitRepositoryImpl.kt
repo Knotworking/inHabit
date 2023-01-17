@@ -1,9 +1,9 @@
-package com.knotworking.inahbit.data
+package com.knotworking.inhabit.data
 
 import android.util.Log
-import com.knotworking.inahbit.data.db.HabitDao
-import com.knotworking.inahbit.data.model.toDomain
-import com.knotworking.inahbit.data.model.toEntity
+import com.knotworking.inhabit.data.db.HabitDao
+import com.knotworking.inhabit.data.model.toDomain
+import com.knotworking.inhabit.data.model.toEntity
 import com.knotworking.inhabit.domain.model.Habit
 import com.knotworking.inhabit.domain.repository.HabitRepository
 import kotlinx.coroutines.flow.*

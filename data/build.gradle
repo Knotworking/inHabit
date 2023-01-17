@@ -7,7 +7,7 @@ plugins {
 apply from: "../dependencies.gradle"
 
 android {
-    namespace 'com.knotworking.inahbit.data'
+    namespace 'com.knotworking.inhabit.data'
     compileSdk 33
 
     defaultConfig {

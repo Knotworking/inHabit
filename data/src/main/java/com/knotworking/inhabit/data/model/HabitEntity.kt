@@ -1,4 +1,4 @@
-package com.knotworking.inahbit.data.model
+package com.knotworking.inhabit.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

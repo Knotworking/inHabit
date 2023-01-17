@@ -1,10 +1,10 @@
-package com.knotworking.inahbit.data.db
+package com.knotworking.inhabit.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.knotworking.inahbit.data.model.HabitEntity
-import com.knotworking.inahbit.data.model.HabitEntryEntity
+import com.knotworking.inhabit.data.model.HabitEntity
+import com.knotworking.inhabit.data.model.HabitEntryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

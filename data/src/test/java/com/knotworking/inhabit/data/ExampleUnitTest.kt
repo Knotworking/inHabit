@@ -1,4 +1,4 @@
-package com.knotworking.inahbit.data
+package com.knotworking.inhabit.data
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.knotworking.inahbit.data.db
+package com.knotworking.inhabit.data.db
 
 import android.content.Context
 import androidx.room.Room

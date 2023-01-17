@@ -1,6 +1,6 @@
-package com.knotworking.inahbit.data
+package com.knotworking.inhabit.data
 
-import com.knotworking.inahbit.data.db.HabitDao
+import com.knotworking.inhabit.data.db.HabitDao
 import com.knotworking.inhabit.domain.repository.HabitRepository
 import dagger.Module
 import dagger.Provides

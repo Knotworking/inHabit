@@ -1,4 +1,4 @@
-package com.knotworking.inahbit.data.model
+package com.knotworking.inhabit.data.model
 
 import com.knotworking.inhabit.domain.model.Habit
 
