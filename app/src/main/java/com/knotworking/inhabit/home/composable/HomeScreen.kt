@@ -1,20 +1,24 @@
 package com.knotworking.inhabit.home.composable
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.knotworking.inhabit.home.HomeViewModel
-import com.knotworking.inhabit.ui.theme.InHabitTheme
+import com.knotworking.inhabit.model.HabitDisplayable
+import java.util.*
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
@@ -43,32 +47,54 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
             }
         }
     ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-            Greeting("${homeViewState.habits.map {
-                    habit -> "${habit.name} ${habit.entries.map { it.timestamp }}" 
-            }}")
+        HomeScreenContent(
+            modifier = Modifier.padding(padding),
+            habits = homeViewState.habits,
+            deleteHabit = { habitId -> viewModel.deleteHabit(habitId) }
+        )
+    }
+}
 
-            if (homeViewState.habits.isNotEmpty()) {
-                Button(onClick = {
-                    val latestHabitId = homeViewState.habits.last().id
-                    viewModel.deleteHabit(latestHabitId)
-                }) {
-                    Text(text = "Delete")
-                }
-            }
+@Composable
+fun HomeScreenContent(
+    modifier: Modifier = Modifier,
+    habits: List<HabitDisplayable>,
+    deleteHabit: (habitId: UUID) -> Unit = {}
+) {
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Adaptive(minSize = 180.dp),
+        contentPadding = PaddingValues(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(habits, key = { it.id }) { habit ->
+            HabitGridItem(
+                habit = habit,
+                deleteHabit = deleteHabit
+            )
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    InHabitTheme {
-        Greeting("Android")
+fun HabitGridItem(
+    modifier: Modifier = Modifier,
+    habit: HabitDisplayable,
+    deleteHabit: (habitId: UUID) -> Unit = {}
+) {
+    Card(modifier = modifier.padding(0.dp), elevation = 5.dp) {
+        Column(Modifier.padding(8.dp)) {
+            Text(text = habit.name)
+            Text(text = "${habit.entries.size} entries")
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                IconButton(onClick = { deleteHabit(habit.id) }) {
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = "Extra actions for habit"
+                    )
+                }
+            }
+        }
     }
 }
