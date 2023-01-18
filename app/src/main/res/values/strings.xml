@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">inHabit</string>
+    <string name="add_habit_action">Add new habit</string>
+    <string name="unknown_action">Unknown action</string>
 </resources>

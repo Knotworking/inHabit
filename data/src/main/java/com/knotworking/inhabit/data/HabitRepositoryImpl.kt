@@ -6,8 +6,10 @@ import com.knotworking.inhabit.data.model.toDomain
 import com.knotworking.inhabit.data.model.toEntity
 import com.knotworking.inhabit.domain.model.Habit
 import com.knotworking.inhabit.domain.repository.HabitRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import java.util.*
+import kotlin.random.Random
 
 class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
@@ -23,6 +25,12 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
 
     override fun getHabit(habitId: UUID): Flow<Habit> =
         habitDao.getById(id = habitId.toString())
+            .map {
+                // Adding in some random delay to test loading UI
+                val randomDelay = Random.nextLong(500, 2000)
+                delay(randomDelay)
+                it
+            }
             .map { map ->
                 assert(map.keys.size == 1) {
                     "There should be exactly 1 habit matching a given id, however ${map.keys.size} were found."
