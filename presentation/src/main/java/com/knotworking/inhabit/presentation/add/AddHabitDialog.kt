@@ -16,15 +16,22 @@ import androidx.compose.ui.window.Dialog
 import com.knotworking.inhabit.presentation.ui.theme.Typography
 
 @Composable
-fun AddHabitDialog(showDialog: MutableState<Boolean>) {
+fun AddHabitDialog(
+    showDialog: MutableState<Boolean>,
+    onAddHabit: (habitName: String) -> Unit
+) {
     Dialog(onDismissRequest = { showDialog.value = false }) {
-        AddHabitDialogContent(showDialog = showDialog)
+        AddHabitDialogContent(showDialog = showDialog, onAddHabit = onAddHabit)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddHabitDialogContent(modifier: Modifier = Modifier, showDialog: MutableState<Boolean>) {
+fun AddHabitDialogContent(
+    modifier: Modifier = Modifier,
+    showDialog: MutableState<Boolean>,
+    onAddHabit: (habitName: String) -> Unit
+) {
     val habitNameField = remember { mutableStateOf("") }
 
     Card(
@@ -54,7 +61,10 @@ fun AddHabitDialogContent(modifier: Modifier = Modifier, showDialog: MutableStat
                 TextButton(onClick = { showDialog.value = false }) {
                     Text(text = "Cancel")
                 }
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = {
+                    onAddHabit(habitNameField.value)
+                    showDialog.value = false
+                }) {
                     Text(text = "Done")
                 }
             }
@@ -66,5 +76,8 @@ fun AddHabitDialogContent(modifier: Modifier = Modifier, showDialog: MutableStat
 @Preview(name = "Add Habit Dialog")
 @Composable
 fun AddHabitDialogContentPreview() {
-    AddHabitDialogContent(showDialog = mutableStateOf(false))
+    AddHabitDialogContent(
+        showDialog = mutableStateOf(false),
+        onAddHabit = {}
+    )
 }
