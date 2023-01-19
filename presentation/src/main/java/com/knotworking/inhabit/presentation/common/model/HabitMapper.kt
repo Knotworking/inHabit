@@ -1,6 +1,7 @@
-package com.knotworking.inhabit.presentation.model
+package com.knotworking.inhabit.presentation.common.model
 
 import com.knotworking.inhabit.domain.model.Habit
+import java.util.*
 
 fun Habit.toDisplayable() = HabitDisplayable(
     id = id,
@@ -12,4 +13,10 @@ fun Habit.toDisplayable() = HabitDisplayable(
             timestamp = it.timestamp
         )
     }
+)
+
+fun createHabitEntry(habitId: UUID): Habit.Entry = Habit.Entry(
+    id = UUID.randomUUID(),
+    habitId = habitId,
+    timestamp = System.currentTimeMillis()
 )

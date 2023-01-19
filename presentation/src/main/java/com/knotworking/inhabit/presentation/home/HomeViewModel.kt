@@ -1,13 +1,12 @@
 package com.knotworking.inhabit.presentation.home
 
 import android.util.Log
-import com.knotworking.inhabit.presentation.BaseViewModel
 import com.knotworking.inhabit.domain.model.Habit
-import com.knotworking.inhabit.domain.usecase.AddHabitEntryUseCase
 import com.knotworking.inhabit.domain.usecase.AddHabitUseCase
 import com.knotworking.inhabit.domain.usecase.DeleteHabitUseCase
 import com.knotworking.inhabit.domain.usecase.GetHabitsUseCase
-import com.knotworking.inhabit.presentation.model.toDisplayable
+import com.knotworking.inhabit.presentation.BaseViewModel
+import com.knotworking.inhabit.presentation.common.model.toDisplayable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.*
@@ -18,7 +17,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getHabitsUseCase: GetHabitsUseCase,
     private val addHabitUseCase: AddHabitUseCase,
-    private val addHabitEntryUseCase: AddHabitEntryUseCase,
     private val deleteHabitUseCase: DeleteHabitUseCase
 ) : BaseViewModel() {
     val homeViewStateFlow: StateFlow<HomeViewState>
@@ -68,26 +66,8 @@ class HomeViewModel @Inject constructor(
             addHabitUseCase(newHabit).collect { addHabitResult ->
                 addHabitResult.onSuccess {
                     Log.d("HomeViewModel", "New habit added")
-                    addEntry(newHabit)
                 }.onFailure {
                     Log.e("HomeViewModel", "Failed to add habit", it)
-                }
-            }
-        }
-    }
-
-    fun addEntry(habit: Habit) {
-        launchInViewModelScope {
-            val newHabitEntry = Habit.Entry(
-                id = UUID.randomUUID(),
-                habitId = habit.id,
-                timestamp = System.currentTimeMillis()
-            )
-            addHabitEntryUseCase(newHabitEntry).collect { addHabitEntryResult ->
-                addHabitEntryResult.onSuccess {
-                    Log.d("HomeViewModel", "New habit entry added")
-                }.onFailure {
-                    Log.e("HomeViewModel", "Failed to add habit entry", it)
                 }
             }
         }

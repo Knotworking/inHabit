@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.knotworking.inhabit.presentation.add.AddHabitDialog
 import com.knotworking.inhabit.presentation.home.HomeViewModel
-import com.knotworking.inhabit.presentation.model.HabitDisplayable
+import com.knotworking.inhabit.presentation.common.model.HabitDisplayable
 import java.util.*
 
 @Composable

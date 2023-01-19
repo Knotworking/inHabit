@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.knotworking.inhabit.presentation.detail.composable.HabitDetailScreen
+import com.knotworking.inhabit.presentation.home.composable.HomeScreen
 import java.util.*
 
 @Composable
@@ -18,7 +19,7 @@ fun InHabitNavHost(
     startDestination = Home.route,
     modifier = modifier) {
         composable(route = Home.route) {
-            com.knotworking.inhabit.presentation.home.composable.HomeScreen(setFabOnClick = setFabOnClick,
+            HomeScreen(setFabOnClick = setFabOnClick,
                 onHabitClick = { habitId ->
                     navController.navigateToHabitDetail(habitId = habitId)
                 })
@@ -27,7 +28,7 @@ fun InHabitNavHost(
             route = HabitDetail.routeWithArgs,
             arguments = HabitDetail.arguments
         ) {
-            HabitDetailScreen()
+            HabitDetailScreen(setFabOnClick = setFabOnClick)
         }
     }
 }

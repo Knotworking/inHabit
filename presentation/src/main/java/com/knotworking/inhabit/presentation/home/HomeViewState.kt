@@ -1,6 +1,6 @@
 package com.knotworking.inhabit.presentation.home
 
-import com.knotworking.inhabit.presentation.model.HabitDisplayable
+import com.knotworking.inhabit.presentation.common.model.HabitDisplayable
 
 //TODO look at example project for handling errors
 data class HomeViewState(

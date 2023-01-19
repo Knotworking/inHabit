@@ -1,4 +1,4 @@
-package com.knotworking.inhabit.presentation.model
+package com.knotworking.inhabit.presentation.common.model
 
 import java.util.*
 

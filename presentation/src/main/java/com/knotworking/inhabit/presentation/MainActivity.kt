@@ -83,9 +83,9 @@ fun InHabitApp() {
 }
 
 private fun getFabSettingsForDestination(destination: NavDestination?): FabSettings {
-    return when (destination?.route) {
+    return when (destination?.route?.substringBefore("/")) {
         Home.route -> FabSettings(showFab = true, contentDescription = R.string.add_habit_action)
-        HabitDetail.route -> FabSettings(showFab = false)
+        HabitDetail.route -> FabSettings(showFab = true, contentDescription = R.string.add_habit_entry_action)
         else -> FabSettings(showFab = false)
     }
 }

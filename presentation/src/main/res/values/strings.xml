@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="add_habit_action">Add habit</string>
+    <string name="add_habit_entry_action">New entry</string>
     <string name="unknown_action">Unknown action</string>
 </resources>
