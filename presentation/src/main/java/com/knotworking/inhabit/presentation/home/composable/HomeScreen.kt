@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.knotworking.inhabit.presentation.add.AddHabitDialog
 import com.knotworking.inhabit.presentation.home.HomeViewModel
 import com.knotworking.inhabit.presentation.model.HabitDisplayable
 import java.util.*
@@ -24,10 +22,18 @@ fun HomeScreen(
     onHabitClick: (habitId: UUID) -> Unit
 ) {
     val homeViewState by viewModel.homeViewStateFlow.collectAsState()
+    val showAddHabitDialog = remember { mutableStateOf(false) }
 
     // https://stackoverflow.com/questions/71186641/how-to-control-a-scaffolds-floatingactionbutton-onclick-from-child-composable
     LaunchedEffect(Unit) {
-        setFabOnClick { viewModel.addHabit() }
+        setFabOnClick { showAddHabitDialog.value = true }
+    }
+    
+    if (showAddHabitDialog.value) {
+        AddHabitDialog(showDialog = showAddHabitDialog,
+            onAddHabit = { name ->
+            viewModel.addHabit(name)
+        })
     }
 
     HomeScreenContent(

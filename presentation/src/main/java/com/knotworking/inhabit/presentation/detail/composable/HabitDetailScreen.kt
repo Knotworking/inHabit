@@ -2,7 +2,7 @@ package com.knotworking.inhabit.presentation.detail.composable
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,7 +23,7 @@ fun HabitDetailScreen(
     val viewState by viewModel.habitDetailViewStateFlow.collectAsState()
 
     if (viewState.habit == null || viewState.loading) {
-        com.knotworking.inhabit.presentation.common.LoadingContent(modifier)
+        LoadingContent(modifier)
     } else {
         HabitDetailContent(
             modifier = modifier,
@@ -37,7 +37,7 @@ fun HabitDetailScreen(
 @Composable
 fun HabitDetailContent(
     modifier: Modifier = Modifier,
-    habit: com.knotworking.inhabit.presentation.model.HabitDisplayable
+    habit: HabitDisplayable
 ) {
     Column(modifier = modifier.padding(8.dp)) {
         Text(
