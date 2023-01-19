@@ -1,64 +1,49 @@
 package com.knotworking.inhabit.home.composable
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.knotworking.inhabit.home.HomeViewModel
 import com.knotworking.inhabit.model.HabitDisplayable
 import java.util.*
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+    setFabOnClick: ((() -> Unit)?) -> Unit,
+    onHabitClick: (habitId: UUID) -> Unit
+) {
     val homeViewState by viewModel.homeViewStateFlow.collectAsState()
-    //TODO move scaffold up to main activity
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.addHabit() }) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = "Add habit",
-                    tint = Color.White
-                )
-            }
-        },
-        floatingActionButtonPosition = FabPosition.Center,
-        isFloatingActionButtonDocked = true,
-        bottomBar = {
-            BottomAppBar(
-                // Defaults to null/no cutout
-                cutoutShape = MaterialTheme.shapes.small.copy(
-                    CornerSize(percent = 50)
-                )
-            ) {
 
-            }
-        }
-    ) { padding ->
-        HomeScreenContent(
-            modifier = Modifier.padding(padding),
-            habits = homeViewState.habits,
-            deleteHabit = { habitId -> viewModel.deleteHabit(habitId) }
-        )
+    // https://stackoverflow.com/questions/71186641/how-to-control-a-scaffolds-floatingactionbutton-onclick-from-child-composable
+    LaunchedEffect(Unit) {
+        setFabOnClick { viewModel.addHabit() }
     }
+
+    HomeScreenContent(
+        modifier = modifier,
+        habits = homeViewState.habits,
+        onDeleteClick = { habitId -> viewModel.deleteHabit(habitId) },
+        onHabitClick = onHabitClick
+    )
 }
 
 @Composable
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
     habits: List<HabitDisplayable>,
-    deleteHabit: (habitId: UUID) -> Unit = {}
+    onDeleteClick: (habitId: UUID) -> Unit,
+    onHabitClick: (habitId: UUID) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -70,7 +55,8 @@ fun HomeScreenContent(
         items(habits, key = { it.id }) { habit ->
             HabitGridItem(
                 habit = habit,
-                deleteHabit = deleteHabit
+                onDeleteClick = onDeleteClick,
+                onHabitClick = onHabitClick
             )
         }
     }

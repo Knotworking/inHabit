@@ -15,14 +15,15 @@ import java.util.*
 fun HabitGridItem(
     modifier: Modifier = Modifier,
     habit: HabitDisplayable,
-    deleteHabit: (habitId: UUID) -> Unit = {}
+    onDeleteClick: (habitId: UUID) -> Unit,
+    onHabitClick: (habitId: UUID) -> Unit
 ) {
-    Card(onClick = {}, modifier = modifier.padding(0.dp), elevation = 5.dp) {
+    Card(onClick = {onHabitClick(habit.id)}, modifier = modifier.padding(0.dp), elevation = 5.dp) {
         Column(Modifier.padding(8.dp)) {
             Text(text = habit.name)
             Text(text = "${habit.entries.size} entries")
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                IconButton(onClick = { deleteHabit(habit.id) }) {
+                IconButton(onClick = { onDeleteClick(habit.id) }) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = "Extra actions for habit"

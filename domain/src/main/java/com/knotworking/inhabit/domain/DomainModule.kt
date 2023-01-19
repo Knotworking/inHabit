@@ -19,6 +19,15 @@ object DomainModule {
     }
 
     @Provides
+    fun provideGetHabitUseCase(habitRepository: HabitRepository): GetHabitUseCase {
+        return GetHabitUseCase { habitId ->
+            getHabit(
+                habitRepository = habitRepository,
+                habitId = habitId)
+        }
+    }
+
+    @Provides
     fun provideAddHabitUseCase(habitRepository: HabitRepository): AddHabitUseCase {
         return AddHabitUseCase { habit ->
             addHabit(

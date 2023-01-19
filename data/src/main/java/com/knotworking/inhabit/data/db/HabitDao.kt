@@ -9,9 +9,18 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HabitDao {
-    @Query("SELECT * FROM habit" +
-    " JOIN habit_entry ON habit.id = habit_entry.habit_id")
+    @Query(
+        "SELECT * FROM habit" +
+                " JOIN habit_entry ON habit.id = habit_entry.habit_id"
+    )
     fun getAll(): Flow<Map<HabitEntity, List<HabitEntryEntity>>>
+
+    @Query(
+        "SELECT * FROM habit" +
+                " JOIN habit_entry ON habit.id = habit_entry.habit_id" +
+                " WHERE habit.id = :id"
+    )
+    fun getById(id: String): Flow<Map<HabitEntity, List<HabitEntryEntity>>>
 
     @Insert
     suspend fun insertAll(vararg habits: HabitEntity)

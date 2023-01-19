@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
         getHabits()
     }
 
-    fun getHabits() {
+    private fun getHabits() {
         launchInViewModelScope {
             getHabitsUseCase().onStart {
                 _homeViewStateFlow.value = HomeViewState(loading = true)
