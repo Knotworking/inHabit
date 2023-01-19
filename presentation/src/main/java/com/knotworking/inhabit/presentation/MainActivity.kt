@@ -8,14 +8,17 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -35,7 +38,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun InHabitApp() {
     InHabitTheme {
@@ -54,9 +57,12 @@ fun InHabitApp() {
                     enter = scaleIn(),
                     exit = scaleOut()
                 ) {
-                    FloatingActionButton(onClick = {
-                        fabOnClick?.invoke()
-                    }) {
+                    FloatingActionButton(
+                        onClick = {
+                            fabOnClick?.invoke()
+                        }, shape = RoundedCornerShape(percent = 50),
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    ) {
                         Icon(
                             imageVector = fabSettings.icon,
                             contentDescription = stringResource(fabSettings.contentDescription),
@@ -66,7 +72,6 @@ fun InHabitApp() {
                 }
             },
             floatingActionButtonPosition = FabPosition.End,
-            isFloatingActionButtonDocked = false,
         ) { padding ->
             InHabitNavHost(
                 navController = navController,
