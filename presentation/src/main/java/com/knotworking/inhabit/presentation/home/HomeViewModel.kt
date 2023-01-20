@@ -56,11 +56,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun addHabit(name: String) {
+    fun addHabit(name: String, unitLabel: String) {
         launchInViewModelScope {
             val newHabit = Habit(
                 id = UUID.randomUUID(),
                 name = name,
+                unitLabel = unitLabel,
                 entries = emptyList()
             )
             addHabitUseCase(newHabit).collect { addHabitResult ->

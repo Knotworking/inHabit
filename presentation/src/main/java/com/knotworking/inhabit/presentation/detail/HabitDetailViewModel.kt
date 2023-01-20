@@ -1,11 +1,8 @@
 package com.knotworking.inhabit.presentation.detail
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import com.knotworking.inhabit.domain.usecase.AddHabitEntryUseCase
 import com.knotworking.inhabit.domain.usecase.GetHabitUseCase
 import com.knotworking.inhabit.presentation.BaseViewModel
-import com.knotworking.inhabit.presentation.common.model.createHabitEntry
 import com.knotworking.inhabit.presentation.common.model.toDisplayable
 import com.knotworking.inhabit.presentation.navigation.HabitDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HabitDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getHabitUseCase: GetHabitUseCase,
-    private val addHabitEntryUseCase: AddHabitEntryUseCase,
+    private val getHabitUseCase: GetHabitUseCase
 ) : BaseViewModel() {
 
     private val habitId =
@@ -51,19 +47,6 @@ class HabitDetailViewModel @Inject constructor(
                         HabitDetailViewState(habit = habit.toDisplayable())
                 }.onFailure {
                     _habitDetailStateFlow.value = HabitDetailViewState(hasError = true)
-                }
-            }
-        }
-    }
-
-    fun addEntry() {
-        launchInViewModelScope {
-            val newHabitEntry = createHabitEntry(habitId)
-            addHabitEntryUseCase(newHabitEntry).collect { addHabitEntryResult ->
-                addHabitEntryResult.onSuccess {
-                    Log.d("HabitDetailViewModel", "New habit entry added")
-                }.onFailure {
-                    Log.e("HabitDetailViewModel", "Failed to add habit entry", it)
                 }
             }
         }

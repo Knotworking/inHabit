@@ -18,5 +18,6 @@ import java.util.*
 data class HabitEntryEntity(
     @PrimaryKey val id: UUID,
     @ColumnInfo(name = "habit_id") val habitId: UUID,
-    val timestamp: Long
+    val timestamp: Long,
+    @ColumnInfo(name = "unit_count")val unitCount: Int
 )

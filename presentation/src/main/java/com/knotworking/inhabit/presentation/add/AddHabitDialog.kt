@@ -18,7 +18,7 @@ import com.knotworking.inhabit.presentation.ui.theme.Typography
 @Composable
 fun AddHabitDialog(
     showDialog: MutableState<Boolean>,
-    onAddHabit: (habitName: String) -> Unit
+    onAddHabit: (habitName: String, unitLabel: String) -> Unit
 ) {
     Dialog(onDismissRequest = { showDialog.value = false }) {
         AddHabitDialogContent(showDialog = showDialog, onAddHabit = onAddHabit)
@@ -30,9 +30,10 @@ fun AddHabitDialog(
 fun AddHabitDialogContent(
     modifier: Modifier = Modifier,
     showDialog: MutableState<Boolean>,
-    onAddHabit: (habitName: String) -> Unit
+    onAddHabit: (habitName: String, unitLabel: String) -> Unit
 ) {
     val habitNameField = remember { mutableStateOf("") }
+    val unitLabelField = remember { mutableStateOf("") }
 
     Card(
         shape = RoundedCornerShape(size = 8.dp),
@@ -51,6 +52,18 @@ fun AddHabitDialogContent(
                     placeholder = { Text(text = "Name") },
                     modifier = Modifier.fillMaxWidth()
                 )
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = "What is yur habit measured in?",
+                    style = Typography.titleMedium
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                TextField(
+                    value = unitLabelField.value,
+                    onValueChange = { unitLabelField.value = it },
+                    placeholder = { Text(text = "e.g. minutes") },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
             Row(
                 modifier = Modifier
@@ -62,7 +75,7 @@ fun AddHabitDialogContent(
                     Text(text = "Cancel")
                 }
                 TextButton(onClick = {
-                    onAddHabit(habitNameField.value)
+                    onAddHabit(habitNameField.value, unitLabelField.value)
                     showDialog.value = false
                 }) {
                     Text(text = "Done")
@@ -78,6 +91,6 @@ fun AddHabitDialogContent(
 fun AddHabitDialogContentPreview() {
     AddHabitDialogContent(
         showDialog = mutableStateOf(false),
-        onAddHabit = {}
+        onAddHabit = {_,_ ->}
     )
 }

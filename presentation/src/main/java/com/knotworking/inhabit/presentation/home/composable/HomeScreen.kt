@@ -31,8 +31,8 @@ fun HomeScreen(
     
     if (showAddHabitDialog.value) {
         AddHabitDialog(showDialog = showAddHabitDialog,
-            onAddHabit = { name ->
-            viewModel.addHabit(name)
+            onAddHabit = { name, unitLabel ->
+            viewModel.addHabit(name = name, unitLabel = unitLabel)
         })
     }
 

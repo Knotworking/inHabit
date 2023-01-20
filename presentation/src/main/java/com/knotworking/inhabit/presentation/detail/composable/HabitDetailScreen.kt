@@ -5,19 +5,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.knotworking.inhabit.presentation.common.LoadingContent
+import com.knotworking.inhabit.presentation.add.AddHabitEntryDialog
+import com.knotworking.inhabit.presentation.common.composable.LoadingContent
 import com.knotworking.inhabit.presentation.common.composable.GenericErrorContent
-import com.knotworking.inhabit.presentation.detail.HabitDetailViewModel
 import com.knotworking.inhabit.presentation.common.model.HabitDisplayable
+import com.knotworking.inhabit.presentation.detail.HabitDetailViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,13 +26,18 @@ fun HabitDetailScreen(
     setFabOnClick: ((() -> Unit)?) -> Unit,
 ) {
     val viewState by viewModel.habitDetailViewStateFlow.collectAsState()
+    val showAddHabitEntryDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         setFabOnClick {
             viewState.habit?.let {
-                viewModel.addEntry()
+                showAddHabitEntryDialog.value = true
             }
         }
+    }
+
+    if (showAddHabitEntryDialog.value) {
+        AddHabitEntryDialog(showDialog = showAddHabitEntryDialog)
     }
 
     if (viewState.hasError) {
@@ -67,14 +70,14 @@ fun HabitDetailContent(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(habit.entries) { entry ->
-                HabitEntryRow(entry = entry)
+                HabitEntryRow(entry = entry, unitLabel = habit.unitLabel)
             }
         }
     }
 }
 
 @Composable
-fun HabitEntryRow(entry: HabitDisplayable.Entry) {
+fun HabitEntryRow(entry: HabitDisplayable.Entry, unitLabel: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -85,7 +88,8 @@ fun HabitEntryRow(entry: HabitDisplayable.Entry) {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = entry.id.toString().take(5))
+            Text(text = entry.id.toString().take(3))
+            Text(text = "${entry.unitCount} $unitLabel")
             Text(text = entry.timestamp.toDateTime())
         }
     }
