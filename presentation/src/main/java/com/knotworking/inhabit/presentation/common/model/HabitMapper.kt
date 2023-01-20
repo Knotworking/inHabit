@@ -6,17 +6,20 @@ import java.util.*
 fun Habit.toDisplayable() = HabitDisplayable(
     id = id,
     name = name,
+    unitLabel = unitLabel,
     entries = entries.map {
         HabitDisplayable.Entry(
             id = it.id,
             habitId = it.habitId,
-            timestamp = it.timestamp
+            timestamp = it.timestamp,
+            unitCount = it.unitCount
         )
     }
 )
 
-fun createHabitEntry(habitId: UUID): Habit.Entry = Habit.Entry(
+fun createHabitEntry(habitId: UUID, unitCount: Int): Habit.Entry = Habit.Entry(
     id = UUID.randomUUID(),
     habitId = habitId,
-    timestamp = System.currentTimeMillis()
+    timestamp = System.currentTimeMillis(),
+    unitCount = unitCount
 )

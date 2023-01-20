@@ -5,12 +5,14 @@ import java.util.UUID
 data class Habit(
     val id: UUID,
     val name: String,
+    val unitLabel: String,
     val entries: List<Entry>
 ) {
     data class Entry(
         val id: UUID,
         val habitId: UUID,
-        val timestamp: Long
+        val timestamp: Long,
+        val unitCount: Int
     )
 }
 

@@ -1,4 +1,4 @@
-package com.knotworking.inhabit.presentation.common
+package com.knotworking.inhabit.presentation.common.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

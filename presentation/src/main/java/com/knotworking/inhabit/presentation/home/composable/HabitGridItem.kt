@@ -1,7 +1,6 @@
 package com.knotworking.inhabit.presentation.home.composable
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
