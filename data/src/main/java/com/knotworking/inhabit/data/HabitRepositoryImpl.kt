@@ -52,8 +52,9 @@ class HabitRepositoryImpl(private val habitDao: HabitDao) : HabitRepository {
         emit(habitDao.insertAll(habitEntry.toEntity()))
     }
 
-    override fun deleteHabit(habitId: UUID): Flow<Unit> = flow {
+    override suspend fun deleteHabit(habitId: UUID) {
         Log.i("HabitRepositoryImpl", "deleteHabit: $habitId")
-        emit(habitDao.deleteById(id = habitId.toString()))
+        val result = habitDao.deleteById(id = habitId.toString())
+        assert(result == 1) { "No habit found for ID" }
     }
 }

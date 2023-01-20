@@ -75,13 +75,14 @@ class HomeViewModel @Inject constructor(
 
     fun deleteHabit(habitId: UUID) {
         launchInViewModelScope {
-            deleteHabitUseCase(habitId).collect { addHabitEntryResult ->
-                addHabitEntryResult.onSuccess {
-                    Log.d("HomeViewModel", "Habit deleted: $habitId")
-                }.onFailure {
-                    Log.e("HomeViewModel", "Failed delete habit: $habitId", it)
-                }
+            val result = deleteHabitUseCase(habitId)
+
+            result.onSuccess {
+                Log.d("HomeViewModel", "Habit deleted: $habitId")
+            }.onFailure {
+                Log.e("HomeViewModel", "Failed to delete habit: $habitId", it)
             }
         }
     }
+
 }

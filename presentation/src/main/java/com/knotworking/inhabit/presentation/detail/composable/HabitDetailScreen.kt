@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.knotworking.inhabit.presentation.common.LoadingContent
+import com.knotworking.inhabit.presentation.common.composable.GenericErrorContent
 import com.knotworking.inhabit.presentation.detail.HabitDetailViewModel
 import com.knotworking.inhabit.presentation.common.model.HabitDisplayable
 import java.text.SimpleDateFormat
@@ -36,7 +37,9 @@ fun HabitDetailScreen(
         }
     }
 
-    if (viewState.habit == null || viewState.loading) {
+    if (viewState.hasError) {
+        GenericErrorContent()
+    } else if (viewState.habit == null || viewState.loading) {
         LoadingContent(modifier)
     } else {
         HabitDetailContent(

@@ -9,5 +9,5 @@ interface HabitRepository {
     fun getHabit(habitId: UUID): Flow<Habit>
     fun addHabit(habit: Habit): Flow<Unit>
     fun addHabitEntry(habitEntry: Habit.Entry): Flow<Unit>
-    fun deleteHabit(habitId: UUID): Flow<Unit>
+    suspend fun deleteHabit(habitId: UUID)
 }

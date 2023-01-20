@@ -29,5 +29,5 @@ interface HabitDao {
     suspend fun insertAll(vararg habitEntries: HabitEntryEntity)
 
     @Query("DELETE FROM habit WHERE id = :id")
-    suspend fun deleteById(id: String)
+    suspend fun deleteById(id: String): Int
 }
