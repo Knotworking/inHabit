@@ -13,7 +13,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "inHabit"
-include ':app'
-include ':domain'
-include ':data'
-include ':presentation'
+include(":app")
+include(":domain")
+include( ":data")
+include(":presentation")
