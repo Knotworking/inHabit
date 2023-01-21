@@ -1,38 +1,16 @@
 ext {
-    //def retrofitVersion = "2.6.2"
-    //def gsonVersion = "2.8.5"
-    //def koinVersion = "2.0.1"
-    //def loggingVersion = "3.14.0"
-    //def gsonConverterVersion = "2.1.0"
-    //def glideVersion = "4.10.0"
+    def kotlinVersion = "1.7.21"
     def nav_version = "2.5.3"
     def coroutinesVersion = "1.5.0"
     def lifecycleExtensionsVersion = "2.1.0"
-    //def paging_version = "1.0.1"
     def room_version = "2.5.0"
     // testing
-    def mockkVersion = '1.12.0'
-    def jUnitVersion = "4.13.2"
+    def mockkVersion = '1.13.3'
+    def jUnitVersion = "5.9.1"
     def turbineVersion = "0.12.1"
 
-    //retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    //gson = "com.google.code.gson:gson:$gsonVersion"
-    //gsonConverter = "com.squareup.retrofit2:converter-gson:$gsonConverterVersion"
-
-    //loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$loggingVersion"
-
-    //koinAndroid = "org.koin:koin-android:$koinVersion"
-    //koinAndroidScope = "org.koin:koin-android-scope:$koinVersion"
-    //koinAndroidViewModel = "org.koin:koin-android-viewmodel:$koinVersion"
-
-//    glide = "com.github.bumptech.glide:glide:$glideVersion"
-
-//    navigationFragment = "androidx.navigation:navigation-fragment-ktx:$navVersion"
-//    navigationUi = "androidx.navigation:navigation-ui-ktx:$navVersion"
     navigationCompose = "androidx.navigation:navigation-compose:$nav_version"
     lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:l$lifecycleExtensionsVersion"
-
-//    paging = "android.arch.paging:runtime:$paging_version"
 
     coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
@@ -44,7 +22,8 @@ ext {
 
     //testing
     mockK = "io.mockk:mockk:$mockkVersion"
+    kotlinTest = "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
     kotlinCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     turbine = "app.cash.turbine:turbine:$turbineVersion"
-    junit = "junit:junit:$jUnitVersion"
+    junit = "org.junit.jupiter:junit-jupiter:$jUnitVersion"
 }

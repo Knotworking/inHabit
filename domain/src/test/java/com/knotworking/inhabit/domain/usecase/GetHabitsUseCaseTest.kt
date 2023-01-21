@@ -7,12 +7,14 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 class GetHabitsUseCaseTest {
@@ -21,7 +23,7 @@ class GetHabitsUseCaseTest {
 
     private lateinit var objectUnderTest: GetHabitsUseCase
 
-    @Before
+    @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
         setUpGetHabitsUseCase()
@@ -38,8 +40,8 @@ class GetHabitsUseCaseTest {
             val result = awaitItem()
 
             assertEquals(
-                Result.success(testHabits),
-                result
+                expected = Result.success(testHabits),
+                actual = result
             )
             awaitComplete()
         }
@@ -48,19 +50,18 @@ class GetHabitsUseCaseTest {
         coVerify { habitRepository.getHabits() }
     }
 
-    //TODO migrate to junit 5 for better kotlin test handling
-    /*@Test
+    @Test
     fun `should rethrow if repository throws CancellationException`() = runTest {
         // prepare
         coEvery { habitRepository.getHabits() } throws CancellationException()
 
         // execute-verify
         assertThrows<CancellationException> {
-
+            objectUnderTest.invoke()
         }
-    }*/
+    }
 
-    /*@Test
+    @Test
     fun `should return failure if repository throws other Exception`() = runTest {
         // prepare
         val testException = Exception("test")
@@ -72,13 +73,12 @@ class GetHabitsUseCaseTest {
                 val result = awaitItem()
 
                 assertEquals(
-                    Result.failure<Exception>(testException),
-                    result
+                    expected = Result.failure(testException),
+                    actual = result
                 )
-                awaitComplete()
             }
         }
-    }*/
+    }
 
     private fun setUpGetHabitsUseCase() {
         objectUnderTest = GetHabitsUseCase {
