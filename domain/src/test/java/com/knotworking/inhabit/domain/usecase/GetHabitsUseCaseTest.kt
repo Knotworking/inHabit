@@ -38,8 +38,8 @@ class GetHabitsUseCaseTest {
             val result = awaitItem()
 
             assertEquals(
-                /* expected = */ Result.success(testHabits),
-                /* actual = */ result
+                Result.success(testHabits),
+                result
             )
             awaitComplete()
         }
@@ -47,6 +47,38 @@ class GetHabitsUseCaseTest {
         // verify
         coVerify { habitRepository.getHabits() }
     }
+
+    //TODO migrate to junit 5 for better kotlin test handling
+    /*@Test
+    fun `should rethrow if repository throws CancellationException`() = runTest {
+        // prepare
+        coEvery { habitRepository.getHabits() } throws CancellationException()
+
+        // execute-verify
+        assertThrows<CancellationException> {
+
+        }
+    }*/
+
+    /*@Test
+    fun `should return failure if repository throws other Exception`() = runTest {
+        // prepare
+        val testException = Exception("test")
+        coEvery { habitRepository.getHabits() } throws testException
+
+        // execute
+        assertThrows<Exception> {
+            objectUnderTest.invoke().test {
+                val result = awaitItem()
+
+                assertEquals(
+                    Result.failure<Exception>(testException),
+                    result
+                )
+                awaitComplete()
+            }
+        }
+    }*/
 
     private fun setUpGetHabitsUseCase() {
         objectUnderTest = GetHabitsUseCase {
